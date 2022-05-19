@@ -1,6 +1,6 @@
 import requests
 from typing import List
-
+import urllib.request as urllib2
 from bs4 import BeautifulSoup
 from claim_extractor import Claim, Configuration
 from claim_extractor.extractors import FactCheckingSiteExtractor, caching
@@ -13,6 +13,27 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
 
     def retrieve_listing_page_urls(self) -> List[str]:
         return ["https://www.logically.ai/factchecks/library"]
+
+    def find_page_count(parsed_listing_page: BeautifulSoup) -> int:
+        count = 0
+        a = soup.find('a', {'class': 'blog-pagination__next-link'})['href']
+        if (a):
+            while (a):
+
+                count += 1
+                url = "https://www.logically.ai/factchecks/library/page/" + str(count)
+                if checkURL(url):
+
+                    soupi = BeautifulSoup(getUrl(url))
+                    a = soupi.find('a', {'class': 'blog-pagination__next-link'})['href']
+
+                else:
+
+                    break
+
+        return count - 1
+
+    find_page_count(soup)
 
     def extract_urls(self, parsed_listing_page: BeautifulSoup):
         s = parsed_listing_page.find_all('article', {'class':'grid-item-4'})
@@ -30,6 +51,17 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
         requete = requests.get(url)
         page = requete.content
         return page
+
+    def checkURL(url):
+        req = urllib2.Request(url)
+        try:
+            handle = urllib2.urlopen(req)
+        except IOError:
+
+            return False
+        else:
+
+            return True
 
     def retrieve_urls(self, parsed_listing_page: BeautifulSoup, number_of_pages: int) \
             -> List[str]:
@@ -52,10 +84,8 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
 
             return urls
 
-        def find_page_count(self, parsed_listing_page: BeautifulSoup) -> int:
-            pass
 
-        def extract_claim_and_review(self, parsed_claim_review_page: BeautifulSoup, url: str) -> List[Claim]:
+    def extract_claim_and_review(self, parsed_claim_review_page: BeautifulSoup, url: str) -> List[Claim]:
             claim = Claim()
             claim.set_url(url)
             claim.set_source("logically")
@@ -69,20 +99,18 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
             # author & author_url
             if parsed_claim_review_page.select('p.fc-posted-by > a'):
                 for author in parsed_claim_review_page.select('p.fc-posted-by > a'):
-                    author_str = author.text.split("|")[0].strip().split("\n")[
-                        0]  # gerer lorsque il n'y a pas d'auteur ?
+                    author_str = author.text.split("|")[0].strip().split("\n")[0]  # gerer lorsque il n'y a pas d'auteur ?
                     author_url = author["href"]
 
-            claim.set_author(author)
+            claim.set_author(author_str)
 
             # rating
-            rating = parsed_claim_review_page.find("div", {
-                "class": "hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module widget-type-text"}).text
+            rating = parsed_claim_review_page.find("div", {"class": "hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module widget-type-text"}).text
             claim.set_rating(rating)
 
             # body_link
             body_link = parsed_claim_review_page.find("link", {"rel": "canonical"})["href"]
 
-            # url
+
 
             return claim

@@ -26,7 +26,7 @@ class MimikamaFactchecking(FactCheckingSiteExtractor):
         soup.pop()
         for i in soup:
             m = int(i.text)
-            if (max < m):
+            if max < m:
                 max = m
         return m
 
@@ -73,13 +73,11 @@ class MimikamaFactchecking(FactCheckingSiteExtractor):
         claim.set_source("mimikama")
 
         # title
-        title = parsed_claim_review_page.find('h1', {
-            "class": "kt-adv-heading_a2405c-b2 wp-block-kadence-advancedheading"}).text
+        title = parsed_claim_review_page.find('h1', {"class": "kt-adv-heading_a2405c-b2 wp-block-kadence-advancedheading"}).text
         claim.set_title(title)
 
         # author & author_url
-        date_author = (parsed_claim_review_page.find('div', {
-            "class": "kt-adv-heading_ce3512-c4 steady-paywall-container wp-block-kadence-advancedheading"}).text).split()
+        date_author = parsed_claim_review_page.find('div', {"class": "kt-adv-heading_ce3512-c4 steady-paywall-container wp-block-kadence-advancedheading"}).text.split()
         claim.set_author(date_author[0] + " " + date_author[1])
         claim.set_date(date_author[3] + " " + date_author[4])
 
