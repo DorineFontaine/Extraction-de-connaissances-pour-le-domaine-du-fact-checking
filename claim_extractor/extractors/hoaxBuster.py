@@ -2,6 +2,7 @@ import re
 from typing import List, Set
 from bs4 import BeautifulSoup
 from dateparser.search import search_dates
+import urllib.request as urllib2
 from tqdm import tqdm
 
 from claim_extractor import Claim, Configuration

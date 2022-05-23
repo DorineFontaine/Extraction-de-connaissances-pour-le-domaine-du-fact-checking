@@ -14,11 +14,11 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
     def retrieve_listing_page_urls(self) -> List[str]:
         return ["https://www.logically.ai/factchecks/library"]
 
-    def find_page_count(parsed_listing_page: BeautifulSoup) -> int:
+    def find_page_count(self,parsed_listing_page: BeautifulSoup) -> int:
         count = 0
         a = soup.find('a', {'class': 'blog-pagination__next-link'})['href']
-        if (a):
-            while (a):
+        if a:
+            while a:
 
                 count += 1
                 url = "https://www.logically.ai/factchecks/library/page/" + str(count)
@@ -33,7 +33,7 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
 
         return count - 1
 
-    find_page_count(soup)
+
 
     def extract_urls(self, parsed_listing_page: BeautifulSoup):
         s = parsed_listing_page.find_all('article', {'class':'grid-item-4'})
@@ -91,9 +91,7 @@ class LogicalyFactChecking(FactCheckingSiteExtractor):
             claim.set_source("logically")
 
             # title
-            title = parsed_claim_review_page.find('span', {
-                "class": "hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_text"},
-                                                  {'id': 'hs_cos_wrapper_modified_claim_'}).text
+            title = parsed_claim_review_page.find('h1').text
             claim.set_title(title)
 
             # author & author_url
