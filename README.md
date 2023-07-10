@@ -1,4 +1,11 @@
+##Context
+As part of the TER project, we had the opportunity to work on the following topic: "In search of fake news". Our group is made up of three students: Sara Belkasmy, Redouane Asma and Dorine Fontaine. Our research was supervised by teacher Konstantin Todorov.
 
+Our subject was directly related to fact-checking sites. Our task was to compile information from these sites in the form of csv files to feed the "CLAIMSKG" knowledge base created by teachers from the Faculty of Science and researchers from several international teams.
+
+To enrich the CLAIMSKG database as much as possible, each member of the group has set himself the task of finding new fact-checking sites to add to the database, if possible in a variety of languages.
+
+We have therefore chosen to deal with the following sites: Mimikama, Correctiv German sites, Logically,Healthfeedback, Usatoday English sites, HoaxBuster a French site.
 
 ## ClaimsKG
 This project constitutes the web scraping component of ClaimsKG that crawls fact checking sites (mostly taken from https://www.poynter.org/international-fact-checking-network-fact-checkers-code-principles, which holds a list of reliable fact-checking sites) and generates a CSV file with a dump of the extracted information. 
