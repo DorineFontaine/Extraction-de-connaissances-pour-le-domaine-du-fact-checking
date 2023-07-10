@@ -1,4 +1,5 @@
-##Context
+## Context
+
 As part of the TER project, we had the opportunity to work on the following topic: "In search of fake news". Our group is made up of three students: Sara Belkasmy, Redouane Asma and Dorine Fontaine. Our research was supervised by teacher Konstantin Todorov.
 
 Our subject was directly related to fact-checking sites. Our task was to compile information from these sites in the form of csv files to feed the "CLAIMSKG" knowledge base created by teachers from the Faculty of Science and researchers from several international teams.
